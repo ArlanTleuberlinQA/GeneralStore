@@ -145,16 +145,8 @@ namespace GeneralStore
         public void TearDown()
 
         {
-
-            if (driver != null)
-
-            {
-
                 driver?.Quit();
                 driver?.Dispose();
-
-            }
-
         }
 
     }

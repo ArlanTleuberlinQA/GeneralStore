@@ -14,6 +14,7 @@ namespace GeneralStore
 
     {
         private AndroidDriver driver;
+        private WebDriverWait? wait;
         [SetUp]
 
         public void SetUp()
@@ -48,8 +49,8 @@ namespace GeneralStore
 
 
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-var selectCountryText = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextView[@text='Select the country where you want to shop']")));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var selectCountryText = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextView[@text='Select the country where you want to shop']")));
 
             string actualResultText = selectCountryText.Text;
 
@@ -81,10 +82,9 @@ var selectCountryText = wait.Until(drv => drv.FindElement(By.XPath("//android.wi
         [Test]
     public void Country_Afghanistan_HasCorrectProperties()
     {
-        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextView[@resource-id='android:id/text1']")));
+        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextView[@resource-id='android:id/text1']")));
  
-       
         VerifyCountryProperties(country);
     }
 
@@ -140,7 +140,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
        [Test]
         public void ChooseUrkaineTest()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var spinner = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/spinnerCountry")));
             spinner.Click();
             var urkaineElement = driver.FindElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().className(\"android.widget.ListView\")).scrollIntoView(new UiSelector().text(\"Ukraine\"))"));
@@ -151,7 +151,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [Test]
         public void BackgoundImageTest()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var backgroundImage = wait.Until(d => d.FindElement(By.ClassName("android.widget.ImageView")));
             Assert.That(backgroundImage.Displayed, Is.True, "Background image is not displayed.");
             TestContext.Out.WriteLine("Background image is displayed.");
@@ -159,7 +159,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [Test]
         public void ToolBarTitleTest()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var toolBarTitle = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/toolbar_title")));
             Assert.That(toolBarTitle.Text, Is.EqualTo("General Store"), "Toolbar title is not correct.");
             TestContext.Out.WriteLine("Toolbar title is correct: " + toolBarTitle.Text);
@@ -167,7 +167,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [Test]
         public void RadioButtonsTest()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var radioButtonMale = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/radioMale")));
             Assert.That(radioButtonMale.Displayed, Is.True, "Radio button is not displayed.");
             Assert.That(radioButtonMale.Enabled, Is.True, "Radio button is not enabled.");
@@ -187,7 +187,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [Test]
         public void LogInWithEmptyName()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var letsShopButton = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/btnLetsShop")));
             var nameField = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/nameField")));
             letsShopButton.Click();
@@ -200,7 +200,7 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [Test]
         public void LoginWithFemaleGender()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             var nameField = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/nameField")));
             var radioButtonFemale = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/radioFemale")));
             var letsShopButton = wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/btnLetsShop")));
@@ -216,11 +216,8 @@ var country = wait.Until(drv => drv.FindElement(By.XPath("//android.widget.TextV
         [TearDown]
         public void TearDown()
         {
-            if (driver != null)
-            {
                 driver?.Quit();
                 driver?.Dispose();
-            }
         }
 
     }
