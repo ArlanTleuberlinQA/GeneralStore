@@ -14,7 +14,7 @@ namespace GeneralStore
     {
 
         private AndroidDriver driver;
- 
+
         [SetUp]
 
         public void SetUp()
@@ -23,13 +23,16 @@ namespace GeneralStore
 
             var capabilities = new AppiumOptions();
 
-         
+
             capabilities.PlatformName = "Android";
             capabilities.DeviceName = "device";
             capabilities.AutomationName = "UIAutomator2";
+            var apkPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "General-Store.apk");
+            capabilities.App = apkPath;
             capabilities.AddAdditionalAppiumOption("appPackage", "com.androidsample.generalstore");
             capabilities.AddAdditionalAppiumOption("appActivity", ".SplashActivity");
- 
+
+
             driver = new AndroidDriver(
 
                 new Uri("http://localhost:4723/wd/hub"),
@@ -140,17 +143,36 @@ namespace GeneralStore
 
         }
 
+        // [TearDown]
+
+        // public void TearDown()
+
+        // {
+        //         driver?.Quit();
+        //         driver?.Dispose();
+        // }
         [TearDown]
-
         public void TearDown()
-
         {
-                driver?.Quit();
-                driver?.Dispose();
+            
+                try
+                {
+                    driver?.RemoveApp("com.androidsample.generalstore");
+                    Console.WriteLine("Приложение удалено.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Не удалось удалить приложение: {ex.Message}");
+                }
+                finally
+                {
+                    driver?.Quit();
+                    driver?.Dispose();
+                }
+
+            
         }
-
     }
-
 }
 
  
