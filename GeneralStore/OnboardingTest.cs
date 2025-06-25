@@ -1,12 +1,7 @@
-﻿using NUnit.Framework;
-
-using OpenQA.Selenium;
-
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
-
 using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.DevTools.V135.Browser;
-using System;
+
  
 namespace GeneralStore
 
@@ -28,18 +23,12 @@ namespace GeneralStore
 
             var capabilities = new AppiumOptions();
 
-            // capabilities.AddAdditionalAppiumOption("platformName", "Android");
-
-            // capabilities.AddAdditionalAppiumOption("deviceName", "device");
+         
             capabilities.PlatformName = "Android";
             capabilities.DeviceName = "device";
             capabilities.AutomationName = "UIAutomator2";
-
             capabilities.AddAdditionalAppiumOption("appPackage", "com.androidsample.generalstore");
-
             capabilities.AddAdditionalAppiumOption("appActivity", ".SplashActivity");
-
-            // capabilities.AddAdditionalAppiumOption("automationName", "UIAutomator2");
  
             driver = new AndroidDriver(
 

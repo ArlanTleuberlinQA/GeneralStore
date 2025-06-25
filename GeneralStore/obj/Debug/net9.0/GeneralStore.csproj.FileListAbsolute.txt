@@ -106,3 +106,4 @@ G:\C# proja\mobile learn\GeneralStore\obj\Debug\net9.0\refint\GeneralStore.dll
 G:\C# proja\mobile learn\GeneralStore\obj\Debug\net9.0\GeneralStore.pdb
 G:\C# proja\mobile learn\GeneralStore\obj\Debug\net9.0\GeneralStore.genruntimeconfig.cache
 G:\C# proja\mobile learn\GeneralStore\obj\Debug\net9.0\ref\GeneralStore.dll
+G:\C# proja\mobile learn\GeneralStore\obj\Debug\net9.0\GeneralStore.sourcelink.json
