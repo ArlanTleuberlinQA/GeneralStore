@@ -16,7 +16,7 @@ namespace GeneralStore.Tests.RegistrationFormTests
         private WebDriverWait? wait;
 
         [SetUp]
-        public void OneTimeSetUp()
+        public void SetUp()
         {
             var serverUrl = new Uri(
                 Environment.GetEnvironmentVariable("APPIUM_SERVER_URL")
@@ -59,7 +59,7 @@ namespace GeneralStore.Tests.RegistrationFormTests
 
 
         [Test]
-        public void ChooseUrkaineTest()
+        public void ChooseUkraineTest()
         {
             Assert.Multiple(() =>
             {
@@ -145,7 +145,7 @@ namespace GeneralStore.Tests.RegistrationFormTests
         }
 
         [TearDown]
-        public void OneTimeTearDown()
+        public void TearDown()
         {
             try
             {

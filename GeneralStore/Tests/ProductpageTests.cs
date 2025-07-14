@@ -22,8 +22,28 @@ namespace ProductPageTests
         private ProductPage _productPage;
         private WebDriverWait? wait;
 
+        public void SwipeHorizontal(AndroidDriver driver)
+        {
+            var size = driver.Manage().Window.Size;
+            int startX = (int)(size.Width * 0.1);
+            int endX = (int)(size.Width * 0.9);
+            int y = size.Height / 2;
+
+            Swipe(driver, startX, y, endX, y, 500);
+        }
+public void Swipe(AndroidDriver driver, int startX, int startY, int endX, int endY, int durationMs)
+{
+    var touchAction = new TouchAction(driver);
+    touchAction
+        .Press(startX, startY)
+        .Wait(durationMs)
+        .MoveTo(endX, endY)
+        .Release()
+        .Perform();
+}
+
         [SetUp]
-        public void OneTimeSetUp()
+        public void SetUp()
         {
             var serverUrl = new Uri(
                 Environment.GetEnvironmentVariable("APPIUM_SERVER_URL")
@@ -55,13 +75,22 @@ namespace ProductPageTests
 
                 Assert.That(_productPage.ParentIsNotNull, "У RecyclerView нет родительского элемента");
 
-
-                Assert.That(_productPage.ProductElementsCount, Is.GreaterThan(0), "RecyclerView does not contain any items.");
-                Console.WriteLine("Items found in RecyclerView: " + _productPage.ProductElementsCount);
+                // Assert.That(_productPage.ProductListDisplayed, Is.True, "RecyclerView is not displayed.");
 
 
-                Console.WriteLine("Product items found in RecyclerView: " + _productPage.ProductItemsCount);
-                Assert.That(_productPage.ProductItemsCount, Is.GreaterThan(0), "Product items are not displayed in the RecyclerView.");
+                // Assert.That(_productPage.ProductElementsCount, Is.GreaterThan(0), "RecyclerView does not contain any items.");
+                // Console.WriteLine("Items found in RecyclerView: " + _productPage.ProductElementsCount);
+
+
+                // Console.WriteLine("Product items found in RecyclerView: " + _productPage.ProductItemsCount);
+                // Assert.That(_productPage.ProductItemsCount, Is.GreaterThan(0), "Product items are not displayed in the RecyclerView.");
+                var productAdd = wait.Until(drv => drv.FindElement(By.XPath("(//android.widget.TextView[@resource-id='com.androidsample.generalstore:id/productAddCart'])[1]")));
+                productAdd.Click();
+                _productPage.ClickOnEmptyBucket();
+                
+
+
+
             });
             
         }

@@ -71,10 +71,10 @@ namespace GeneralStore.Pages
         public void SelectCountry(string country)
 {
 
-    var spinner = Wait.Until(d => d.FindElement(By.Id("com.androidsample.generalstore:id/spinnerCountry")));
+    var spinner = WaitFor(_spinnerCountry);
     spinner.Click();
 
-    var countryElement = Driver.FindElement(
+    var countryElement = WaitFor(
         MobileBy.AndroidUIAutomator(
             $"new UiScrollable(new UiSelector().className(\"android.widget.ListView\")).scrollIntoView(new UiSelector().text(\"{country}\"))"
         ));
