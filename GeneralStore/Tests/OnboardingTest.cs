@@ -1,6 +1,6 @@
 ﻿using System;
 using GeneralStore.Configs;
-using GeneralStore.Pages;
+using GeneralStore.Pages.MainPage;
 using NUnit.Framework;
 using OpenQA.Selenium.Appium.Android;
  

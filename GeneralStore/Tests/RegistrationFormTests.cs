@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Support.UI;
 using GeneralStore.Configs;
-using GeneralStore.Pages;
+using GeneralStore.Pages.MainPage;
 
 
 namespace GeneralStore.Tests.RegistrationFormTests

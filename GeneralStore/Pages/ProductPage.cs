@@ -9,13 +9,13 @@ namespace GeneralStore.Pages.ProductPage
 {
     public class ProductPage : DriverFactory
     {
-        public ProductPage(AndroidDriver driver) : base(driver) { }
-        private readonly By _productList = By.Id("com.androidsample.generalstore:id/recyclerView");
+       
+        private readonly By _productList = By.Id("com.androidsample.generalstore:id/rvProductList");
         private readonly By _parentElement = By.XPath("//android.support.v7.widget.RecyclerView[@resource-id='com.androidsample.generalstore:id/rvProductList']/..");
         private readonly By _emptyBucket = By.Id("com.androidsample.generalstore:id/appbar_btn_cart");
         public IReadOnlyCollection<IWebElement> ProductElements => ProductList.FindElements(By.XPath(".//*"));
         public IReadOnlyCollection<IWebElement> ProductItems => ProductList.FindElements(By.ClassName("android.widget.RelativeLayout"));
-
+ public ProductPage(AndroidDriver driver) : base(driver) { }
         public bool ProductListDisplayed => WaitFor(_productList).Displayed;
         public bool ProductListEnabled => WaitFor(_productList).Enabled;
         public IWebElement ProductList => WaitFor(_productList);

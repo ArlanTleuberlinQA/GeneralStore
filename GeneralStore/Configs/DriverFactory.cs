@@ -14,10 +14,10 @@ namespace GeneralStore.Configs
         protected DriverFactory(AndroidDriver driver)
         {
             Driver = driver;
-            Wait   = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            Wait   = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
         }
  
         protected IWebElement WaitFor(By locator) =>
-            (IWebElement)Wait.Until(ExpectedConditions.ElementExists(locator));
+            Wait.Until(ExpectedConditions.ElementExists(locator));
     }
 }

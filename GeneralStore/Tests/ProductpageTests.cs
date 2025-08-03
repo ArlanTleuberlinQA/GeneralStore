@@ -4,7 +4,9 @@ using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Support.UI;
 using GeneralStore.Configs;
 using GeneralStore.Pages.ProductPage;
-using GeneralStore.Pages;
+using GeneralStore.Pages.MainPage;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Appium.Android.Enums;
 
 
 namespace ProductPageTests
@@ -25,21 +27,74 @@ namespace ProductPageTests
         public void SwipeHorizontal(AndroidDriver driver)
         {
             var size = driver.Manage().Window.Size;
-            int startX = (int)(size.Width * 0.1);
+            int startX = 1;
             int endX = (int)(size.Width * 0.9);
             int y = size.Height / 2;
-
-            Swipe(driver, startX, y, endX, y, 500);
+ 
+            SwipeWithActions(driver, startX, y, endX, y);
         }
-public void Swipe(AndroidDriver driver, int startX, int startY, int endX, int endY, int durationMs)
+
+
+        public void SwipeWithActions(AndroidDriver driver, int startX, int startY, int endX, int endY)
+        {
+            var finger = new PointerInputDevice(PointerKind.Touch);
+            var swipe = new ActionSequence(finger, 0);
+
+            swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, startX, startY, TimeSpan.Zero));
+            swipe.AddAction(finger.CreatePointerDown(0));
+            swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, endX, endY, TimeSpan.FromMilliseconds(1000)));
+            swipe.AddAction(finger.CreatePointerUp(0));
+
+            driver.PerformActions(new List<ActionSequence> { swipe });
+        }
+        public void SwipeBackGesture(AndroidDriver driver)
+        {
+            var size = driver.Manage().Window.Size;
+
+            int startX = 1;
+            int endX = (int)(size.Width * 0.7);
+            int y = size.Height / 2;
+
+            var finger = new PointerInputDevice(PointerKind.Touch);
+            var swipe = new ActionSequence(finger, 0);
+
+            swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, startX, y, TimeSpan.Zero));
+            swipe.AddAction(finger.CreatePointerDown(0));
+            swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, endX, y, TimeSpan.FromMilliseconds(1000)));
+            swipe.AddAction(finger.CreatePointerUp(0));
+
+            driver.PerformActions(new List<ActionSequence> { swipe });
+            Thread.Sleep(3000);
+        }
+        public void GoBack(AndroidDriver driver, string mode = "swipe")
 {
-    var touchAction = new TouchAction(driver);
-    touchAction
-        .Press(startX, startY)
-        .Wait(durationMs)
-        .MoveTo(endX, endY)
-        .Release()
-        .Perform();
+    if (mode.ToLower() == "swipe")
+    {
+        var size = driver.Manage().Window.Size;
+ 
+        int startX = 1;
+        int endX = (int)(size.Width * 0.7);    
+        int y = size.Height / 2;               
+ 
+        var finger = new PointerInputDevice(PointerKind.Touch);
+        var swipe = new ActionSequence(finger, 0);
+ 
+        swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, startX, y, TimeSpan.Zero));
+        swipe.AddAction(finger.CreatePointerDown(0));
+        swipe.AddAction(finger.CreatePointerMove(CoordinateOrigin.Viewport, endX, y, TimeSpan.FromMilliseconds(1000)));
+        swipe.AddAction(finger.CreatePointerUp(0));
+ 
+        driver.PerformActions(new List<ActionSequence> { swipe });
+ 
+    }
+    else if (mode.ToLower() == "key")
+    {
+        driver.PressKeyCode(AndroidKeyCode.Back);
+    }
+    else
+    {
+        throw new ArgumentException("Mode must be either 'swipe' or 'key'.");
+    }
 }
 
         [SetUp]
@@ -64,7 +119,7 @@ public void Swipe(AndroidDriver driver, int startX, int startY, int endX, int en
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             _registrationForm.EnterName("Test User");
             _registrationForm.ClickLetsShopButton();
-
+            // SwipeHorizontal(driver);
             Assert.Multiple(() =>
             {
                 Assert.That(_registrationForm.ToolbarTitleDisplayed, Is.True, "Toolbar title is not displayed.");
@@ -75,22 +130,17 @@ public void Swipe(AndroidDriver driver, int startX, int startY, int endX, int en
 
                 Assert.That(_productPage.ParentIsNotNull, "У RecyclerView нет родительского элемента");
 
-                // Assert.That(_productPage.ProductListDisplayed, Is.True, "RecyclerView is not displayed.");
-
-
-                // Assert.That(_productPage.ProductElementsCount, Is.GreaterThan(0), "RecyclerView does not contain any items.");
-                // Console.WriteLine("Items found in RecyclerView: " + _productPage.ProductElementsCount);
-
-
-                // Console.WriteLine("Product items found in RecyclerView: " + _productPage.ProductItemsCount);
-                // Assert.That(_productPage.ProductItemsCount, Is.GreaterThan(0), "Product items are not displayed in the RecyclerView.");
+                Assert.That(_productPage.ProductListDisplayed, Is.True, "RecyclerView is not displayed.");
+                Assert.That(_productPage.ProductElementsCount, Is.GreaterThan(0), "RecyclerView does not contain any items.");
+                Console.WriteLine("Items found in RecyclerView: " + _productPage.ProductElementsCount);
+                Console.WriteLine("Product items found in RecyclerView: " + _productPage.ProductItemsCount);
+                Assert.That(_productPage.ProductItemsCount, Is.GreaterThan(0), "Product items are not displayed in the RecyclerView.");
                 var productAdd = wait.Until(drv => drv.FindElement(By.XPath("(//android.widget.TextView[@resource-id='com.androidsample.generalstore:id/productAddCart'])[1]")));
                 productAdd.Click();
                 _productPage.ClickOnEmptyBucket();
+                GoBack(driver, "swipe");
+                Assert.That(_registrationForm.ToolbarTitleText, Is.EqualTo("Products"), "Products page title is not correct after clicking back gesture.");
                 
-
-
-
             });
             
         }
@@ -113,6 +163,7 @@ public void Swipe(AndroidDriver driver, int startX, int startY, int endX, int en
         {
             try
             {
+                driver?.TerminateApp("com.androidsample.generalstore");
                 driver?.RemoveApp("com.androidsample.generalstore");
             }
             catch (Exception e)

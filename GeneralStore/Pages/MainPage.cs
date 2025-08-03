@@ -3,7 +3,7 @@ using OpenQA.Selenium.Appium.Android;
 using GeneralStore.Configs;
 using OpenQA.Selenium.Appium;
 
-namespace GeneralStore.Pages
+namespace GeneralStore.Pages.MainPage
 {
     public class MainPage : DriverFactory
     {
