@@ -67,8 +67,8 @@ namespace GeneralStore.Tests.RegistrationFormTests
                 Assert.That(_registrationForm.SpinnerCountryEnabled, Is.True, "Select country is not enabled.");
                 Assert.That(_registrationForm.SpinnerCountryClickable, Is.EqualTo("true"), "Select country is not clickable.");
                 TestContext.Out.WriteLine("Select country is displayed, enabled, and clickable.");
-                _registrationForm.SelectCountry("Ukraine");
-                Assert.That(_registrationForm.SelectedCountryText, Is.EqualTo("Ukraine"));
+                _registrationForm.SelectCountry("France");
+                Assert.That(_registrationForm.SelectedCountryText, Is.EqualTo("France"));
                 Assert.That(_registrationForm.SelectedCountryDisplayed, Is.True, "Selected country is not displayed.");
                 Assert.That(_registrationForm.SelectedCountryEnabled, Is.True, "Selected country is not enabled.");
             });

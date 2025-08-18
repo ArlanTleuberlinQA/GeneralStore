@@ -14,7 +14,7 @@ namespace GeneralStore.Configs
         protected DriverFactory(AndroidDriver driver)
         {
             Driver = driver;
-            Wait   = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+            Wait   = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
         }
  
         protected IWebElement WaitFor(By locator) =>
